@@ -71,6 +71,12 @@ public class ControllerSkill {
         this.skillService.exportSkillsInExcel(name, description, sortBy, sortDirection, page, size, response);
     }
 
+    @GetMapping("/pdf/all")
+    public  void exportToPdf(HttpServletResponse response) throws IOException {
+        this.skillService.exportToPdf(response);
+
+    }
+
     @PostMapping("/create")
     public ResponseEntity<Object> createsSkill(@RequestBody CreateSkillDto payload) {
         try {
@@ -139,13 +145,12 @@ public class ControllerSkill {
     @DeleteMapping("/{id}")
     public ResponseEntity<Object> deleteSkill(@PathVariable("id") int id) {
         try {
-            boolean isdeleted = skillService.deleteService(id);
-            if (isdeleted) {
+            boolean deleted = skillService.deleteService(id);
+            if (deleted) {
                 return ResponseHandler.responseBuilder("Skill deleted Successfully.", HttpStatus.OK, null);
             }
             return ResponseHandler.responseBuilder("Skill to delete not found.", HttpStatus.NOT_FOUND, null);
         } catch (Exception e) {
-            System.out.println(e);
             return new ResponseEntity<>("Something went wrong.", HttpStatus.BAD_REQUEST);
         }
     }

@@ -1,5 +1,6 @@
 package com.dcc.api.skills;
 
+import com.dcc.api.skills.utiliy.SkillExportToPdfService;
 import com.dcc.api.skills.utiliy.dto.CreateSkillDto;
 import com.dcc.api.skills.utiliy.dto.UpdateSkillDto;
 import com.dcc.api.skills.utiliy.SkillExportToExcelService;
@@ -21,11 +22,15 @@ public class ServiceSkill implements IServices<Skill> {
     private final RepositorySkill repositorySkill;
     private final SkillExportToExcelService skillExportToExcelService;
     private final SkillMapper skillMapper;
+    private final SkillExportToPdfService skillExportToPdfService;
 
-    public ServiceSkill(RepositorySkill repositorySkill, SkillExportToExcelService skillExportToExcelService, SkillMapper skillMapper) {
+    public ServiceSkill(RepositorySkill repositorySkill, SkillExportToExcelService skillExportToExcelService, SkillMapper skillMapper, SkillExportToPdfService skillExportToPdfService) {
         this.repositorySkill = repositorySkill;
         this.skillExportToExcelService = skillExportToExcelService;
+        this.skillExportToPdfService = skillExportToPdfService;
+
         this.skillMapper = skillMapper;
+
     }
 
     @Override
@@ -99,5 +104,11 @@ public class ServiceSkill implements IServices<Skill> {
         List<Skill> data = repositorySkill.findAll(spec, pageRequest);
         skillExportToExcelService.exportToExcel(response, data);
 
+    }
+
+    public void exportToPdf(HttpServletResponse response) throws IOException {
+        List<Skill> data = repositorySkill.findAll();
+
+        this.skillExportToPdfService.exportToPDF(response, data);
     }
 }
