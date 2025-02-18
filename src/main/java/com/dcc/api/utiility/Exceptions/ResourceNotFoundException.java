@@ -1,4 +1,4 @@
-package com.dcc.api.utiility.Exceptions;
+package com.dcc.api.utiility.exceptions;
 
 public class ResourceNotFoundException extends  RuntimeException{
     public ResourceNotFoundException(String message){
